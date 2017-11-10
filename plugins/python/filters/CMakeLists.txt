@@ -12,6 +12,16 @@ target_include_directories(${python_libname} PRIVATE
 
 target_link_libraries(${python_libname} PUBLIC
     ${PYTHON_LIBRARY} ${CMAKE_DL_LIBS})
+PDAL_ADD_PLUGIN(cmap_libname filter cmap
+    FILES
+        ${PLANG}
+        CmapFilter.cpp
+    )
+target_include_directories(${cmap_libname} PRIVATE
+    ${PYTHON_INCLUDE_DIR} ${PDAL_JSONCPP_INCLUDE_DIR})
+
+target_link_libraries(${cmap_libname} PUBLIC
+    ${PYTHON_LIBRARY} ${CMAKE_DL_LIBS})
 
 if (WITH_TESTS)
 
