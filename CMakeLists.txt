@@ -244,6 +244,32 @@ if (NOT PDAL_HAVE_LAZPERF)
 endif()
 PDAL_ADD_LIBRARY(${PDAL_BASE_LIB_NAME} ${SRCS} ${RPLY_SRCS})
 
+find_package(Hexer)
+set_package_properties(Hexer PROPERTIES TYPE OPTIONAL
+    PURPOSE "Determine boundary and density of a point cloud")
+if (HEXER_FOUND)
+    add_definitions(-DHAVE_HEXER=1)
+    target_sources(${PDAL_BASE_LIB_NAME}
+        PRIVATE
+            ${CMAKE_SOURCE_DIR}/plugins/hexbin/filters/HexBin.cpp
+    )
+    target_link_libraries(${PDAL_BASE_LIB_NAME} PRIVATE ${HEXER_LIBRARY})
+    target_include_directories(${PDAL_BASE_LIB_NAME}
+        PRIVATE
+            ${PDAL_VENDOR_DIR}/pdalboost
+        PUBLIC
+            ${HEXER_INCLUDE_DIR}
+    )
+
+    if (WITH_TESTS)
+        PDAL_ADD_TEST(hexbintest
+            FILES
+                ${CMAKE_SOURCE_DIR}/plugins/hexbin/test/HexbinFilterTest.cpp
+            LINK_WITH
+                ${PDAL_BASE_LIB_NAME})
+    endif()
+endif()
+
 #
 # Interface include directories allow downstream project to get the directory
 # without specification.

@@ -43,12 +43,14 @@ using namespace hexer;
 namespace pdal
 {
 
-static PluginInfo const s_info = PluginInfo(
+static PluginInfo const s_info
+{
     "filters.hexbin",
     "Tessellate the point's X/Y domain and determine point density and/or point boundary.",
-    "http://pdal.io/stages/filters.hexbin.html" );
+    "http://pdal.io/stages/filters.hexbin.html"
+};
 
-CREATE_SHARED_STAGE(HexBin, s_info)
+CREATE_STATIC_STAGE(HexBin, s_info)
 
 void HexBin::addArgs(ProgramArgs& args)
 {
