@@ -22,11 +22,11 @@ before_install:
     - |
       echo ""
       echo "Configuring conda."
-      conda env create -f scripts/ci/environment.yml
+      conda env create -f ./scripts/ci/environment.yml
       source activate pdal
 
 script:
-  - scripts/ci/script.sh
+  - ./scripts/ci/script.sh
 
 after_success:
   - echo "secure travis:" "$TRAVIS_SECURE_ENV_VARS"
