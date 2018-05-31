@@ -24,6 +24,7 @@ requirements:
     - laz-perf 1.1.*
     - nitro <2.8
     - hexer 1.4.*
+    - eigen 3.3.*
     - laszip 3.2.*
     - curl
     - zlib
