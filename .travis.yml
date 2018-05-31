@@ -3,13 +3,25 @@
 
 sudo: required
 
-services: docker
+install:
+    # Install Miniconda.
+    - |
+      echo ""
+      echo "Installing a fresh version of Miniconda."
+      MINICONDA_URL="https://repo.continuum.io/miniconda"
+      MINICONDA_FILE="Miniconda3-latest-Linux-x86_64.sh"
+      curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
+      bash $MINICONDA_FILE -b
 
-before_install:
-  - docker pull alpine:3.7
+    # Configure conda.
+    - |
+      echo ""
+      echo "Configuring conda."
+      conda env create -f scripts/ci/environment.yml
+      source activate pdal
 
 script:
-  - docker run -v $TRAVIS_BUILD_DIR:/pdal -t alpine:3.7 /bin/sh -c "/pdal/scripts/ci/script.sh"
+  - scripts/ci/script.sh
 
 after_success:
   - echo "secure travis:" "$TRAVIS_SECURE_ENV_VARS"
