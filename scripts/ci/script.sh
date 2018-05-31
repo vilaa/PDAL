@@ -4,8 +4,6 @@
 gcc --version
 g++ --version
 
-cd /pdal
-
 mkdir -p _build || exit 1
 cd _build || exit 1
 
@@ -32,12 +30,3 @@ make -j2
 LD_LIBRARY_PATH=./lib
 ctest -V
 make install
-
-for EXAMPLE in writing writing-filter writing-kernel writing-reader writing-writer
-do
-    cd /pdal/examples/$EXAMPLE
-    mkdir -p _build || exit 1
-    cd _build || exit 1
-    cmake -G "Unix Makefiles" .. && \
-    make
-done

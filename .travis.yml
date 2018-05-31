@@ -22,7 +22,6 @@ before_install:
     - |
       echo ""
       echo "Configuring conda."
-      cat ./scripts/ci/environment.yml
       conda env create -f ./scripts/ci/environment.yml
       source activate pdal
 
