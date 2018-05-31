@@ -6,13 +6,9 @@ package:
   version: {{ version }}
 
 source:
-  path: $TRAVIS_BUILD_DIR
+  path: /home/travis/build/PDAL/PDAL
   patches:
     - geos.patch
-
-build:
-  script_env:
-    - TRAVIS_BUILD_DIR
 
 requirements:
   build:
