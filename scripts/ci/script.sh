@@ -7,7 +7,6 @@ g++ --version
 mkdir -p _build || exit 1
 cd _build || exit 1
 
-GEOTIFF_INCLUDE_DIR=$CONDA_PREFIX/include \
 cmake .. \
     -G "Unix Makefiles" \
     -DCMAKE_BUILD_TYPE=Release \
@@ -25,7 +24,8 @@ cmake .. \
     -DBUILD_PLUGIN_SQLITE=ON \
     -DWITH_LASZIP=ON \
     -DWITH_LAZPERF=ON \
-    -DWITH_TESTS=ON
+    -DWITH_TESTS=ON \
+    -DGEOTIFF_INCLUDE_DIR=$CONDA_PREFIX/include
 
 make -j2
 LD_LIBRARY_PATH=./lib
