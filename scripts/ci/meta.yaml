@@ -28,7 +28,6 @@ requirements:
     - laszip 3.2.*
     - curl
     - zlib
-    - pcl 1.8.*
   run:
     - python
     - {{ pin_compatible('numpy') }}
@@ -37,7 +36,6 @@ requirements:
     - {{ pin_compatible('nitro', max_pin='x.x') }}
     - {{ pin_compatible('hexer', max_pin='x.x') }}
     - {{ pin_compatible('laszip', max_pin='x.x') }}
-    - {{ pin_compatible('pcl', max_pin='x.x') }}
     - libgdal
     - geos
     - curl
