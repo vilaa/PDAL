@@ -21,7 +21,7 @@ requirements:
     - geos
     - postgresql 10.3.*
     - sqlite
-    - laz-perf 1.1.*
+    - laz-perf 1.2.*
     - nitro <2.8
     - hexer 1.4.*
     - eigen 3.3.*
