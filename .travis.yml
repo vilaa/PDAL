@@ -17,8 +17,8 @@ install:
     - |
       echo ""
       echo "Configuring conda."
-      conda env create -f scripts/ci/environment.yml
-      source activate pdal
+      conda env create -f "scripts/ci/environment.yml"
+      source /home/travis/miniconda3/bin/activate pdal
 
 script:
   - scripts/ci/script.sh
