@@ -26,7 +26,9 @@ cmake .. \
     -DWITH_LAZPERF=ON \
     -DWITH_TESTS=ON \
     -DGEOTIFF_INCLUDE_DIR=$CONDA_PREFIX/include \
-    -DGEOTIFF_LIBRARY=$CONDA_PREFIX/lib/libgeotiff.dylib
+    -DGEOTIFF_LIBRARY=$CONDA_PREFIX/lib/libgeotiff.dylib \
+    -DHEXER_INCLUDE_DIR=$CONDA_PREFIX/include \
+    -DHEXER_LIBRARY=$CONDA_PREFIX/lib/libhexer.dylib
 
 make -j2
 LD_LIBRARY_PATH=./lib
