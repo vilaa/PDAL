@@ -7,6 +7,7 @@ g++ --version
 mkdir -p _build || exit 1
 cd _build || exit 1
 
+GEOTIFF_INCLUDE_DIR=$CONDA_PREFIX/include \
 cmake .. \
     -G "Unix Makefiles" \
     -DCMAKE_BUILD_TYPE=Release \
@@ -14,7 +15,7 @@ cmake .. \
     -DCMAKE_CXX_COMPILER=g++ \
     -DCMAKE_MAKE_PROGRAM=make \
     -DBUILD_PLUGIN_PYTHON=ON \
-    -DBUILD_PLUGIN_CPD=ON \
+    -DBUILD_PLUGIN_CPD=OFF \
     -DBUILD_PLUGIN_GREYHOUND=ON \
     -DBUILD_PLUGIN_HEXBIN=ON \
     -DBUILD_PLUGIN_NITF=ON \
