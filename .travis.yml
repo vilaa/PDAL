@@ -3,7 +3,7 @@
 
 sudo: required
 
-install:
+before_install:
     # Install Miniconda.
     - |
       echo ""
@@ -11,14 +11,19 @@ install:
       MINICONDA_URL="https://repo.continuum.io/miniconda"
       MINICONDA_FILE="Miniconda3-latest-Linux-x86_64.sh"
       curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
-      bash $MINICONDA_FILE -b
+      bash $MINICONDA_FILE -b -p $HOME/miniconda
+      explore PATH="$HOME/miniconda/bin:$PATH"
+      hash -r
+      conda config --set always_yes yes --set changeps1 no
+      conda update -q conda
+      conda info -a
 
     # Configure conda.
     - |
       echo ""
       echo "Configuring conda."
-      conda env create -f "scripts/ci/environment.yml"
-      source /home/travis/miniconda3/bin/activate pdal
+      conda env create -f scripts/ci/environment.yml
+      source activate pdal
 
 script:
   - scripts/ci/script.sh
