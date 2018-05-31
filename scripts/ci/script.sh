@@ -26,12 +26,12 @@ cmake .. \
     -DWITH_LAZPERF=ON \
     -DWITH_TESTS=ON \
     -DGEOTIFF_INCLUDE_DIR=$CONDA_PREFIX/include \
-    -DGEOTIFF_LIBRARY=$CONDA_PREFIX/lib/libgeotiff.dylib \
+    -DGEOTIFF_LIBRARY=$CONDA_PREFIX/lib/libgeotiff.so \
     -DHEXER_INCLUDE_DIR=$CONDA_PREFIX/include \
-    -DHEXER_LIBRARY=$CONDA_PREFIX/lib/libhexer.dylib \
+    -DHEXER_LIBRARY=$CONDA_PREFIX/lib/libhexer.so \
     -DNITRO_INCLUDE_DIR=$CONDA_PREFIX/include \
-    -DNITRO_C_LIBRARY=$CONDA_PREFIX/lib/libnitf-c.dylib \
-    -DNITRO_CPP_LIBRARY=$CONDA_PREFIX/lib/libnitf-cpp.dylib
+    -DNITRO_C_LIBRARY=$CONDA_PREFIX/lib/libnitf-c.so \
+    -DNITRO_CPP_LIBRARY=$CONDA_PREFIX/lib/libnitf-cpp.so
 
 make -j2
 LD_LIBRARY_PATH=./lib
