@@ -35,5 +35,5 @@ DEACTIVATE_DIR=$PREFIX/etc/conda/deactivate.d
 mkdir -p $ACTIVATE_DIR
 mkdir -p $DEACTIVATE_DIR
 
-cp $RECIPE_DIR/scripts/activate.sh $ACTIVATE_DIR/pdal-activate.sh
-cp $RECIPE_DIR/scripts/deactivate.sh $DEACTIVATE_DIR/pdal-deactivate.sh
+cp $RECIPE_DIR/activate.sh $ACTIVATE_DIR/pdal-activate.sh
+cp $RECIPE_DIR/deactivate.sh $DEACTIVATE_DIR/pdal-deactivate.sh
