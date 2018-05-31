@@ -1,0 +1,19 @@
+name: pdal
+channels:
+  - conda-forge
+dependencies:
+  - nitro<2.8
+  - python=3.6.4
+  - numpy=1.14.3
+  - libgdal=2.2.4
+  - geos=3.6.2
+  - postgresql=10.4
+  - jsoncpp=1.8.1
+  - eigen=3.3.3
+  - sqlite=3.20.*
+  - laz-perf=1.1.0
+  - hexer=1.4.0
+  - laszip=3.2.2
+  - curl=7.60.0
+  - zlib=1.2.11
+  - pcl=1.8.1
