@@ -27,7 +27,7 @@ before_install:
       conda list
 
 script:
-  - ./scripts/ci/script.sh
+  - conda build scripts/ci
 
 after_success:
   - echo "secure travis:" "$TRAVIS_SECURE_ENV_VARS"
