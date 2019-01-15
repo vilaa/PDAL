@@ -172,10 +172,7 @@ void TIndexReader::initialize()
         m_out_ref.reset(new gdal::SpatialRef(m_tgtSrsString));
     else
         m_out_ref.reset(new gdal::SpatialRef(m_out_ref->wkt()));
-
-    // Set SRS if not overridden.
-    if (getSpatialReference().empty())
-        setSpatialReference(SpatialReference(m_out_ref->wkt()));
+    setSpatialReference(SpatialReference(m_out_ref->wkt()));
 
     std::unique_ptr<gdal::Geometry> wkt_g;
 

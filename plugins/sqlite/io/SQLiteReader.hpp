@@ -63,7 +63,6 @@ private:
     std::string m_schemaFile;
     std::string m_connection;
     std::string m_modulename;
-    SpatialReference m_spatialRef;
     PatchPtr m_patch;
 
     bool m_at_end;

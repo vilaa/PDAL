@@ -95,12 +95,7 @@ void OciReader::initialize()
     if (!m_stmt->Fetch())
         throwError("Unable to fetch a point cloud entry entry.");
     m_block->setFetched();
-
-    // If the spatial reference wasn't provided as an option, fetch it from
-    // the data source.
-    if (m_spatialRef.empty())
-        m_spatialRef = fetchSpatialReference(m_stmt, m_block);
-    setSpatialReference(m_spatialRef);
+    setSpatialReference(fetchSpatialReference(m_stmt, m_block));
 }
 
 

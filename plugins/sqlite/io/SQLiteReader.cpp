@@ -79,8 +79,7 @@ void SQLiteReader::initialize()
             std::string(e.what()));
     }
 
-    if (getSpatialReference().empty())
-        setSpatialReference(fetchSpatialReference(m_query));
+    setSpatialReference(fetchSpatialReference(m_query));
     m_patch = PatchPtr(new Patch());
 }
 

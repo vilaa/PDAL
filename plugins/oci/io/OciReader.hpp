@@ -85,7 +85,6 @@ private:
     std::string m_schemaFile;
     std::string m_connSpec;
     bool m_updatePointSourceId;
-    SpatialReference m_spatialRef;
     bool m_atEnd;
     std::map<int32_t, XMLSchema> m_schemas;
     bool m_compression;
