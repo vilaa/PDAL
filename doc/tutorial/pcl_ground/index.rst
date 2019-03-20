@@ -1,50 +1,105 @@
 .. _pcl_ground:
 
 ===============================================================================
-Identifying ground returns using ProgressiveMorphologicalFilter segmentation
+Identifying ground returns
 ===============================================================================
 
-:Author: Bradley Chambers
-:Contact: brad.chambers@gmail.com
-:Date: 10/28/2015
+One of the most commonly used tasks within the PDAL application is that of
+segmenting ground returns in point cloud datasets. The goal of this tutorial is
+to share several of the options within PDAL for completing this task.
 
+To run the examples in this tutorial, download the dataset `CSite1_orig-utm.laz
+<https://raw.github.com/PDAL/data/master/isprs/CSite1_orig-utm.laz>`_ and save
+it to disk.
 
-Implements the Progressive Morphological Filter for segmentation of ground
-points.
+.. image:: csite-original.png
+   :height: 400px
 
-.. note::
-
-  ``filters.ground`` required PCL and has since been replaced by
-  :ref:`filters.pmf`, which is a native PDAL filter. :ref:`ground_command` has
-  been retained, but now calls :ref:`filters.pmf` under the hood as opposed to
-  ``filters.ground`` and is installed as a native PDAL kernel independent of the
-  PCL plugin. As such, the outputs shown in this tutorial may vary slightly, but
-  the underlying algorithm is identical.
-
-Background
+Simple Morphological Filter
 ------------------------------------------------------------------------------
+
+The Simple Morphological Filter (SMRF) is one of two ground filters available
+via PDAL [Pingel2013]_. SMRF options can be found in the :ref:`<filters.smrf>`
+documentation.
+
+In each of the examples in this section, we will call the following ``pdal
+translate`` command. Simply create the ``pipeline.json`` according to each
+example and update the path as necessary.
+
+::
+
+    $ pdal translate -i /path/to/CSite1_orig-utm.laz \
+        -o /path/to/output.laz \
+        --json /path/to/pipeline.json
+
+The first example uses all default options for SMRF, with no preprocessing. The
+only additional filter used in the pipeline is a :ref:`<filters.range>` stage.
+This is not required, but is included to crop only returns classified as ground
+for visualization purposes.
+
+.. literalinclude:: smrf-range.json
+
+The output is shown below.
+
+.. image:: csite-smrf-default.png
+   :height: 400px
+
+When viewed from the side, it is apparent that there are a number of low noise
+points that can negatively impact many ground segmentation approaches.
+
+.. image:: csite-pmf-front.png
+   :height: 400px
+
+We can insert the :ref:`<filters.outlier>` stage before SMRF to mark noise
+points with a Classificaiton value of 7 (:ref:`<filters.elm>` should do a
+reasonable job in this instance too). SMRF can then be told to ignore all
+points with a Classification of 7.
+
+.. literalinclude:: outlier-smrf-range.json
+
+The result is shown below.
+
+.. image:: csite-smrf-denoise.png
+   :height: 400px
+
+Finally, large buildings can be problematic with many ground segmentation
+methods. One tool that SMRF provides to combat this is the ``cut`` parameter.
+We set ``cut`` to 20 to see if we can improve the segmentation (perhaps most
+notably the large structure in the lower right corner).
+
+.. literalinclude:: outlier-smrf-range-cut.json
+
+The updated run successfully removes the large building (at the expense of
+terrain at the top of the hill in the top-center portion of the scene).
+
+.. image:: csite-smrf-cut.png
+   :height: 400px
+
+
+Progressive Morphological Filter
+------------------------------------------------------------------------------
+
+PMF [Zhang2003]_.
+
+filters.pmf :ref:`pmf <filters.pmf>`
+
+pdal ground -i ~/Data/bare_earth_eval/isprs/converted/laz/CSite1_orig-utm.laz -o ~/Temp/ground-kernel-defaults.laz -v4
+pdal ground -i ~/Data/bare_earth_eval/isprs/converted/laz/CSite1_orig-utm.laz -o ~/Temp/ground-kernel-defaults.laz --verbose 4
+pdal ground -i ~/Data/bare_earth_eval/isprs/converted/laz/CSite1_orig-utm.laz -o ~/Temp/ground-kernel-defaults.laz --extract --verbose 4
+pdal ground -i ~/Data/bare_earth_eval/isprs/converted/laz/CSite1_orig-utm.laz -o ~/Temp/ground-kernel-denoise.laz --extract --denoise --verbose 4
+pdal ground -i ~/Data/bare_earth_eval/isprs/converted/laz/CSite1_orig-utm.laz -o ~/Temp/ground-kernel-denoise-cell.laz --extract --denoise --cell_size=1.5 --verbose 4
 
 A complete description of the algorithm can be found in the article `"A
 Progressive Morphological Filter for Removing Nonground Measurements from
 Airborne LIDAR Data" <http://users.cis.fiu.edu/~chens/PDF/TGRS.pdf>`_ by K.
-Zhang, S.  Chen, D. Whitman, M. Shyu, J. Yan, and C. Zhang.
-
-For more information on how to invoke this PCL-based filter programmatically,
-see the `ProgressiveMorphologicalFilter`_ tutorial on the PCL website.
+Zhang, S. Chen, D. Whitman, M. Shyu, J. Yan, and C. Zhang.
 
 We have chosen to demonstrate the algorithm using data from the 2003 report
 "ISPRS Comparison of Filters." For more on the data and the study itself,
 please see http://www.itc.nl/isprswgIII-3/filtertest/ as well as `"Experimental
 comparison of filter algorithms for bare-earth extraction from airborne laser
 scanning point clouds" <http://dx.doi.org/10.1016/j.isprsjprs.2004.05.004>`_ by
-G. Sithole and G.  Vosselman.
-
-First, download the dataset `CSite1_orig-utm.laz
-<https://raw.github.com/PDAL/data/master/isprs/CSite1_orig-utm.laz>`_
-and save it somewhere to disk.
-
-.. image:: original.png
-   :height: 400px
+G. Sithole and G. Vosselman.
 
 Using the Ground kernel
 ------------------------------------------------------------------------------
@@ -66,135 +121,28 @@ remaining ground points.
 ::
 
     $ pdal ground -i CSite1_orig-utm.laz -o CSite1_orig-utm-ground.laz -v4
+    
+The resulting filtered cloud can be seen below.
 
-    --------------------------------------------------------------------------------
-    NAME:    ()
-    HELP:
-    AUTHOR:
-    --------------------------------------------------------------------------------
-    process tile 0 through the pipeline
-
-       Step 1) ProgressiveMorphologicalFilter
-
-          max window size: 33
-          slope: 1.000000
-          max distance: 2.500000
-          initial distance: 0.150000
-          cell size: 1.000000
-          base: 2.000000
-          exponential: true
-          negative: false
-          Iteration 0 (height threshold = 0.150000, window size = 3.000000)...ground now has 872413  points
-          Iteration 1 (height threshold = 2.150000, window size = 5.000000)...ground now has 833883 points
-          Iteration 2 (height threshold = 2.500000, window size = 9.000000)...ground now has 757030 points
-          Iteration 3 (height threshold = 2.500000, window size = 17.000000)...ground now has 625333 points
-          Iteration 4 (height threshold = 2.500000, window size = 33.000000)...ground now has 580852 points
-          1366408 points filtered to 580852 following progressive morphological filter
-
-The resulting filtered cloud can be seen in this top-down and front view. When
-viewed from the side, it is apparent that there are a number of low noise
-points that have fooled the PMF filter.
-
-.. image:: after-top1.png
+.. image:: csite-pmf-default.png
    :height: 400px
 
-.. image:: after-front1.png
-   :height: 400px
-
-
-To address, we introduce an alternate way to call PMF, as part of a PCL
-pipeline, where we preprocess with an outlier removal step. The command is
-nearly identical, replacing ``ground`` with ``pcl`` and adding a pipeline JSON
-specified with ``-p``.
-
-.. literalinclude:: sor_pmf.json
-
-::
-
-    $ pdal pcl -i CSite1_orig-utm.laz -o CSite1_orig-utm-ground.laz -p sor-pmf.json -v4
-
-    --------------------------------------------------------------------------------
-    NAME:   Progressive Morphological Filter with Outlier Removal (1.0)
-    HELP:
-    AUTHOR:
-    --------------------------------------------------------------------------------
-    process tile 0 through the pipeline
-
-       Step 1) StatisticalOutlierRemoval
-
-          8 neighbors and 3.000000 multiplier
-          1366408 points filtered to 1356744 following outlier removal
-
-       Step 2) ProgressiveMorphologicalFilter
-
-          max window size: 33
-          slope: 1.000000
-          max distance: 2.500000
-          initial distance: 0.150000
-          cell size: 1.000000
-          base: 2.000000
-          exponential: true
-          negative: false
-          Iteration 0 (height threshold = 0.150000, window size = 3.000000)...ground now has 874094 points
-          Iteration 1 (height threshold = 2.150000, window size = 5.000000)...ground now has 837141 points
-          Iteration 2 (height threshold = 2.500000, window size = 9.000000)...ground now has 762213 points
-          Iteration 3 (height threshold = 2.500000, window size = 17.000000)...ground now has 632827 points
-          Iteration 4 (height threshold = 2.500000, window size = 33.000000)...ground now has 596620 points
-          1356744 points filtered to 596620 following progressive morphological filter
+To address, we introduce an alternate way to call PMF
 
 The result is noticeably cleaner in both the top-down and front views.
 
-.. image:: after-top2.png
+.. image:: csite-pmf-denoise.png
    :height: 400px
 
-.. image:: after-front2.png
+.. image:: csite-denoised-front.png
    :height: 400px
 
 Unfortunately, you may notice that we still have a rather large building in the
 lower right of the image. By tweaking the parameters slightly, in this case,
 increasing the cell size, we can do a better job of removing such features.
 
-.. literalinclude:: sor_pmf2.json
+Once again, the result is noticeably cleaner.
 
-::
-
-    $ pdal pcl -i CSite1_orig-utm.laz -o CSite1_orig-utm-ground.laz -p sor-pmf2.json -v4
-
-    --------------------------------------------------------------------------------
-    NAME:   Progressive Morphological Filter with Outlier Removal (1.0)
-    HELP:
-    AUTHOR:
-    --------------------------------------------------------------------------------
-    process tile 0 through the pipeline
-
-       Step 1) StatisticalOutlierRemoval
-
-          8 neighbors and 3.000000 multiplier
-          1366408 points filtered to 1356744 following outlier removal
-
-       Step 2) ProgressiveMorphologicalFilter
-
-          max window size: 33
-          slope: 1.000000
-          max distance: 2.500000
-          initial distance: 0.150000
-          cell size: 1.500000
-          base: 2.000000
-          exponential: true
-          negative: false
-          Iteration 0 (height threshold = 0.150000, window size = 4.500000)...ground now has 785496 points
-          Iteration 1 (height threshold = 2.500000, window size = 7.500000)...ground now has 728738 points
-          Iteration 2 (height threshold = 2.500000, window size = 13.500000)...ground now has 623385 points
-          Iteration 3 (height threshold = 2.500000, window size = 25.500000)...ground now has 581679 points
-          Iteration 4 (height threshold = 2.500000, window size = 49.500000)...ground now has 551006 points
-          1356744 points filtered to 551006 following progressive morphological filter
-
-Once again, the result is noticeably cleaner in both the top-down and front views.
-
-.. image:: after-top3.png
+.. image:: csite-pmf-cellsize.png
    :height: 400px
 
-.. image:: after-front3.png
-   :height: 400px
-
-.. _`ProgressiveMorphologicalFilter`: http://pointclouds.org/documentation/tutorials/progressive_morphological_filtering.php
