@@ -42,8 +42,8 @@ primitive objects, and first stage implementations.
 
 `Bradley Chambers`_ from `RadiantSolutions`_ has contributed numerous features
 and capabilities to the PDAL project, including :ref:`Poisson sampling
-<filters.sample>` and :ref:`Progressive Morphological Filters
-<pcl_ground>`. He is also a prolific :ref:`tutorial` writer.
+<filters.sample>` and :ref:`ground`. He is also a prolific :ref:`tutorial`
+writer.
 
 .. _`Bradley Chambers`: https://github.com/chambbj
 .. _`RadiantSolutions`: http://radiantsolutions.com/
