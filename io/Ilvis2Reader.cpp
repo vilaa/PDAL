@@ -216,7 +216,9 @@ std::cerr << "Filename = " << m_filename << "!\n";
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; i < HeaderSize; ++i)
     {
+std::cerr << "About to read line " << i << "!\n";
         std::getline(m_stream, line);
+std::cerr << "Line = " << line << "!\n";
         m_lineNum++;
     }
 std::cerr << "-Ready!\n";
