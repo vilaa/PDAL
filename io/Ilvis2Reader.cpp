@@ -201,6 +201,7 @@ std::cerr << "+Ready!\n";
             throwError(err.what());
         }
     }
+std::cerr << ".. read metadata!\n";
 
     static const int HeaderSize = 2;
     std::string line;
@@ -209,6 +210,7 @@ std::cerr << "+Ready!\n";
     m_stream.open(m_filename);
     m_layout = table.layout();
     m_resample = false;
+std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; i < HeaderSize; ++i)
     {
         std::getline(m_stream, line);

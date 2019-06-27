@@ -54,7 +54,6 @@ TEST(MergeTest, test4)
     EXPECT_EQ(2130u, view->size());
 }
 
-/**
 TEST(MergeTest, test5)
 {
     using namespace pdal;
@@ -70,6 +69,7 @@ TEST(MergeTest, test5)
     EXPECT_EQ(2130u, view->size());
 }
 
+/**
 TEST(MergeTest, test6)
 {
     using namespace pdal;
