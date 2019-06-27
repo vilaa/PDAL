@@ -209,12 +209,12 @@ std::cerr << ".. read metadata!\n";
     m_lineNum = 0;
 std::cerr << "Filename = " << m_filename << "!\n";
     m_stream.open(m_filename);
-    if (!m_stream)
+    if (!m_stream.good())
         throwError("Couldn't open file '" + m_filename + "'.");
     m_layout = table.layout();
     m_resample = false;
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
-    for (size_t i = 0; i < HeaderSize; ++i)
+    for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
     {
 std::cerr << "About to read line " << i << "!\n";
         std::getline(m_stream, line);

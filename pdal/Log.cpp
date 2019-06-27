@@ -81,10 +81,10 @@ Log::Log(std::string const& leaderString, std::ostream* v, bool timing)
 
 Log::~Log()
 {
-
     if (m_deleteStreamOnCleanup)
     {
         m_log->flush();
+std::cerr << "Deleting log!\n";
         delete m_log;
     }
 }
