@@ -207,7 +207,10 @@ std::cerr << ".. read metadata!\n";
     std::string line;
 
     m_lineNum = 0;
+std::cerr << "Filename = " << m_filename << "!\n";
     m_stream.open(m_filename);
+    if (!m_stream)
+        throwError("Couldn't open file '" + filename + "'.");
     m_layout = table.layout();
     m_resample = false;
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";

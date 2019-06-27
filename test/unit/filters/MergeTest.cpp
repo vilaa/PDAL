@@ -70,6 +70,7 @@ TEST(MergeTest, test5)
 }
 
 /**
+**/
 TEST(MergeTest, test6)
 {
     using namespace pdal;
@@ -82,12 +83,12 @@ TEST(MergeTest, test6)
 
     std::ostringstream oss;
     std::ostream& o = std::clog;
-    auto ctx = Utils::redirect(o, oss);
+//    auto ctx = Utils::redirect(o, oss);
 
     mgr.execute();
-    std::string s = oss.str();
-    EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
-    Utils::restore(o, ctx);
+ //   std::string s = oss.str();
+ //   EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
+ //   Utils::restore(o, ctx);
 
     PointViewSet viewSet = mgr.views();
 
@@ -95,4 +96,3 @@ TEST(MergeTest, test6)
     PointViewPtr view = *viewSet.begin();
     EXPECT_EQ(2130u, view->size());
 }
-**/
