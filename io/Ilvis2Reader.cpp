@@ -204,19 +204,24 @@ std::cerr << "+Ready!\n";
 std::cerr << ".. read metadata!\n";
 
     static const int HeaderSize = 2;
-    std::string line;
 
     m_lineNum = 0;
 std::cerr << "Filename = " << m_filename << "!\n";
     m_stream.open(m_filename);
     if (!m_stream.good())
         throwError("Couldn't open file '" + m_filename + "'.");
+    if (!std::is_open(m_stream))
+        std::cerr << "Not open!\n";
+    else
+        std::cerr << "Open!\n";
     m_layout = table.layout();
     m_resample = false;
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
     {
 std::cerr << "About to read line " << i << "!\n";
+        std::string line;
+std::cerr << "About to getline " << i << "!\n";
         std::getline(m_stream, line);
 std::cerr << "Line = " << line << "!\n";
         m_lineNum++;
