@@ -210,7 +210,7 @@ std::cerr << "Filename = " << m_filename << "!\n";
     m_stream.open(m_filename);
     if (!m_stream.good())
         throwError("Couldn't open file '" + m_filename + "'.");
-    if (!std::is_open(m_stream))
+    if (!m_stream.is_open())
         std::cerr << "Not open!\n";
     else
         std::cerr << "Open!\n";
