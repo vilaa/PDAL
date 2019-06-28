@@ -68,7 +68,11 @@ std::istream& operator >> (std::istream& in, Ilvis2Reader::IlvisMapping& mval)
           { "HIGH", Ilvis2Reader::IlvisMapping::HIGH },
           { "ALL", Ilvis2Reader::IlvisMapping::ALL } };
 
-    mval = m[s];
+    auto it = m.find(s);
+    if (it == m.end())
+        in.setstate(std::iosbase::failbit);
+    else
+        mval = it->second;
     return in;
 }
 
@@ -142,6 +146,7 @@ void Ilvis2Reader::addDimensions(PointLayoutPtr layout)
 
 void Ilvis2Reader::initialize(PointTableRef)
 {
+std::cerr << "Initialize!\n";
     readit(m_stream, m_filename);
 
 std::cerr << "Skip init!\n";

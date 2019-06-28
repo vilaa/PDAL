@@ -46,6 +46,9 @@ class NullStreambuf : public std::streambuf
 {
     char dummyBuffer[64];
 protected:
+    virtual ~NullStreambuf()
+    {}
+
     virtual int overflow(int c)
     {
         setp(dummyBuffer, dummyBuffer + sizeof(dummyBuffer));
@@ -58,8 +61,11 @@ class NullOStream : private NullStreambuf, public std::ostream
 public:
     NullOStream() : std::ostream(this)
         {}
+    virtual ~NullOStream()
+    {}
+
     NullStreambuf* rdbuf() const
-        { return const_cast<NullOStream *>(this); }
+        { return const_cast<NullStreambuf *>(this); }
 };
 
 } // namespace

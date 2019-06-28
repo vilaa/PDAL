@@ -85,8 +85,9 @@ TEST(MergeTest, test6)
 //Added redirect.
     std::ostringstream oss;
     auto ctx = Utils::redirect(std::clog, oss);
-
+std::cerr << "Before execute!\n";
     mgr.execute();
+std::cerr << "After execute!\n";
 
     PointViewSet viewSet = mgr.views();
     EXPECT_EQ(1u, viewSet.size());
