@@ -84,7 +84,7 @@ private:
     bool m_resample;
     PointLayoutPtr m_layout;
     std::string m_metadataFile;
-//    Ilvis2MetadataReader m_mdReader;
+    Ilvis2MetadataReader m_mdReader;
 
     virtual void addDimensions(PointLayoutPtr layout);
     virtual void addArgs(ProgramArgs& args);
