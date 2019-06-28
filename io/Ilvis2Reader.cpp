@@ -147,11 +147,6 @@ void Ilvis2Reader::addDimensions(PointLayoutPtr layout)
 
 void Ilvis2Reader::initialize(PointTableRef)
 {
-std::cerr << "Initialize!\n";
-    readit(m_stream, m_filename);
-
-std::cerr << "Skip init!\n";
-/**
     if (!m_metadataFile.empty() && !FileUtils::fileExists(m_metadataFile))
         throwError("Invalid metadata file: '" + m_metadataFile + "'");
 
@@ -159,7 +154,6 @@ std::cerr << "Skip init!\n";
     // See http://nsidc.org/data/docs/daac/icebridge/ilvis2/index.html for
     // background
     setSpatialReference(SpatialReference("EPSG:4326"));
-**/
 }
 
 
@@ -223,10 +217,6 @@ void Ilvis2Reader::readPoint(PointRef& point, StringList s,
 
 void Ilvis2Reader::ready(PointTableRef table)
 {
-std::cerr << "+Ready!\n";
-    readit(m_stream, m_filename);
-std::cerr << "Done readit!\n";
-    /**
     if (!m_metadataFile.empty())
     {
         try
@@ -238,32 +228,21 @@ std::cerr << "Done readit!\n";
             throwError(err.what());
         }
     }
-**/
-std::cerr << ".. read metadata!\n";
 
     static const int HeaderSize = 2;
 
     m_lineNum = 0;
-std::cerr << "Filename = " << m_filename << "!\n";
-
-std::cerr << "Done new open!\n";
-readit(m_stream, m_filename);
-std::cerr << "About to do problem read!\n";
 
     m_stream.open(m_filename);
-    if (!m_stream.good())
-        throwError("Couldn't open file '" + m_filename + "'.");
     if (!m_stream.is_open())
         std::cerr << "Not open!\n";
     else
         std::cerr << "Open!\n";
     std::cerr << "Position = " << m_stream.tellg() << "!\n";
-std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
     {
 std::cerr << "About to read line " << i << "!\n";
         std::string line;
-std::cerr << "About to getline " << i << "!\n";
         std::getline(m_stream, line);
 std::cerr << "Line = " << line << "!\n";
         m_lineNum++;
