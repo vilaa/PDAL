@@ -114,7 +114,7 @@ namespace
 
 void Ilvis2Reader::addArgs(ProgramArgs& args)
 {
-    args.add("mapping", "Mapping for values", m_mapping, IlvisMapping::ALL);
+//    args.add("mapping", "Mapping for values", m_mapping, IlvisMapping::ALL);
     args.add("metadata", "Metadata file", m_metadataFile);
 }
 
@@ -239,14 +239,6 @@ std::cerr << ".. read metadata!\n";
     m_lineNum = 0;
 std::cerr << "Filename = " << m_filename << "!\n";
 
-std::ifstream in;
-in.open(m_filename);
-char d = in.get();
-while (in.good())
-{
-    std::cerr << d;
-    d = in.get();
-}
 std::cerr << "Done new open!\n";
 readit(m_stream, m_filename);
 std::cerr << "About to do problem read!\n";
@@ -258,19 +250,7 @@ std::cerr << "About to do problem read!\n";
         std::cerr << "Not open!\n";
     else
         std::cerr << "Open!\n";
-try
-{
-std::cerr << "Position = " << m_stream.tellg() << "!\n";
-}
-catch (const std::exception& e)
-{
-    std::cerr << "Exception = " << e.what() << "!\n";
-}
-catch (...)
-{
-    std::cerr << "Got exception on stream!\n";
-}
-    m_resample = false;
+    std::cerr << "Position = " << m_stream.tellg() << "!\n";
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
     {
@@ -281,6 +261,8 @@ std::cerr << "About to getline " << i << "!\n";
 std::cerr << "Line = " << line << "!\n";
         m_lineNum++;
     }
+
+    m_resample = false;
     m_layout = table.layout();
 std::cerr << "-Ready!\n";
 }
