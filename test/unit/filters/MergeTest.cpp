@@ -80,17 +80,16 @@ TEST(MergeTest, test6)
 
     PipelineManager mgr;
     mgr.setLog(log);
-//OK to here
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
-
-//    std::ostringstream oss;
-//    std::ostream& o = std::clog;
-//    auto ctx = Utils::redirect(o, oss);
+//ABELL OK to here.
+    std::ostringstream oss;
+    std::ostream& o = std::clog;
+    auto ctx = Utils::redirect(o, oss);
 
 //    mgr.execute();
  //   std::string s = oss.str();
  //   EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
- //   Utils::restore(o, ctx);
+   Utils::restore(o, ctx);
 
     /**
     PointViewSet viewSet = mgr.views();

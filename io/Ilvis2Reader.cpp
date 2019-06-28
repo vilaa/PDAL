@@ -223,7 +223,18 @@ std::cerr << "Filename = " << m_filename << "!\n";
         std::cerr << "Not open!\n";
     else
         std::cerr << "Open!\n";
+try
+{
 std::cerr << "Position = " << m_stream.tellg() << "!\n";
+}
+catch (const std::exception& e)
+{
+    std::cerr << "Exception = " << e.what() << "!\n";
+}
+catch (...)
+{
+    std::cerr << "Got exception on stream!\n";
+}
     m_resample = false;
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
