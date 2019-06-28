@@ -89,6 +89,28 @@ std::ostream& operator<<(std::ostream& out,
     return out;
 }
 
+namespace
+{
+    void readit(std::ifstream& stream, const std::string& filename)
+    {
+        stream.open(filename);
+        if (!stream.good())
+            std::cerr << "Bad stream on open!\n";
+        if (!stream.is_open())
+            std::cerr << "Not open!\n";
+        else
+            std::cerr << "Open!\n";
+        std::cerr << "Position = " << stream.tellg() << "!\n";
+
+        for (size_t i = 0; stream.good() && i < 2; ++i)
+        {
+            std::string line;
+            std::getline(stream, line);
+        }
+        stream.close();
+    }
+} // namespace
+
 
 void Ilvis2Reader::addArgs(ProgramArgs& args)
 {
@@ -119,6 +141,8 @@ void Ilvis2Reader::addDimensions(PointLayoutPtr layout)
 
 void Ilvis2Reader::initialize(PointTableRef)
 {
+    readit(m_stream, m_filename);
+
 std::cerr << "Skip init!\n";
 /**
     if (!m_metadataFile.empty() && !FileUtils::fileExists(m_metadataFile))
@@ -193,6 +217,8 @@ void Ilvis2Reader::readPoint(PointRef& point, StringList s,
 void Ilvis2Reader::ready(PointTableRef table)
 {
 std::cerr << "+Ready!\n";
+    readit(m_stream, m_filename);
+std::cerr << "Done readit!\n";
     /**
     if (!m_metadataFile.empty())
     {
@@ -211,13 +237,6 @@ std::cerr << ".. read metadata!\n";
     static const int HeaderSize = 2;
 
     m_lineNum = 0;
-/*
-**/
-FILE* fp = fopen(m_filename.c_str(), "r");
-char c;
-while (fread(&c, 1, 1, fp) == 1)
-    std::cerr << c;
-fclose(fp);
 std::cerr << "Filename = " << m_filename << "!\n";
 
 std::ifstream in;
@@ -229,6 +248,9 @@ while (in.good())
     d = in.get();
 }
 std::cerr << "Done new open!\n";
+readit(m_stream, m_filename);
+std::cerr << "About to do problem read!\n";
+
     m_stream.open(m_filename);
     if (!m_stream.good())
         throwError("Couldn't open file '" + m_filename + "'.");

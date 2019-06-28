@@ -75,9 +75,15 @@ TEST(MergeTest, test6)
 {
     using namespace pdal;
 
+//Adding logging.
+    LogPtr log(new Log("pdal merge", &std::clog));
+    log->setLevel((LogLevel)5);
+
     PipelineManager mgr;
+    mgr.setLog(log);
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
     mgr.execute();
+
     PointViewSet viewSet = mgr.views();
     EXPECT_EQ(1u, viewSet.size());
     PointViewPtr view = *viewSet.begin();
