@@ -61,16 +61,21 @@ void checkPoint(const PointView& data, PointId index, double time,
 
 TEST(Ilvis2ReaderTest, testReadDefault)
 {
+/**
     Option filename("filename",
         Support::datapath("ilvis2/ILVIS2_TEST_FILE.TXT"));
     Options options(filename);
     std::shared_ptr<Ilvis2Reader> reader(new Ilvis2Reader);
-    reader->setOptions(options);
+**/
+    Options options;
+    options.add("filename", Support::datapath("ilvis2/ILVIS2_TEST_FILE.TXT"));
+    Ilvis2Reader reader;
+    reader.setOptions(options);
 
     PointTable table;
 
-    reader->prepare(table);
-    PointViewSet viewSet = reader->execute(table);
+    reader.prepare(table);
+    PointViewSet viewSet = reader.execute(table);
     EXPECT_EQ(viewSet.size(), 1u);
     PointViewPtr view = *viewSet.begin();
 
