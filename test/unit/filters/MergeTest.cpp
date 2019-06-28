@@ -80,7 +80,8 @@ TEST(MergeTest, test6)
 
     PipelineManager mgr;
     mgr.setLog(log);
-//    mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
+//OK to here
+    mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
 
 //    std::ostringstream oss;
 //    std::ostream& o = std::clog;

@@ -210,6 +210,11 @@ std::cerr << ".. read metadata!\n";
     m_lineNum = 0;
 /*
 **/
+FILE* fp = fopen(m_filename.c_str(), "r");
+char c;
+while (fread(&c, 1, 1, fp) == 1)
+    std::cerr << c;
+fclose(fp);
 std::cerr << "Filename = " << m_filename << "!\n";
     m_stream.open(m_filename);
     if (!m_stream.good())
@@ -218,6 +223,7 @@ std::cerr << "Filename = " << m_filename << "!\n";
         std::cerr << "Not open!\n";
     else
         std::cerr << "Open!\n";
+std::cerr << "Position = " << m_stream.tellg() << "!\n";
     m_resample = false;
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
