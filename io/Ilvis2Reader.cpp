@@ -190,6 +190,7 @@ void Ilvis2Reader::readPoint(PointRef& point, StringList s,
 void Ilvis2Reader::ready(PointTableRef table)
 {
 std::cerr << "+Ready!\n";
+    /**
     if (!m_metadataFile.empty())
     {
         try
@@ -201,11 +202,14 @@ std::cerr << "+Ready!\n";
             throwError(err.what());
         }
     }
+**/
 std::cerr << ".. read metadata!\n";
 
     static const int HeaderSize = 2;
 
     m_lineNum = 0;
+/*
+**/
 std::cerr << "Filename = " << m_filename << "!\n";
     m_stream.open(m_filename);
     if (!m_stream.good())
@@ -214,7 +218,6 @@ std::cerr << "Filename = " << m_filename << "!\n";
         std::cerr << "Not open!\n";
     else
         std::cerr << "Open!\n";
-    m_layout = table.layout();
     m_resample = false;
 std::cerr << ".. reading lines -- header = " << HeaderSize << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
@@ -226,6 +229,7 @@ std::cerr << "About to getline " << i << "!\n";
 std::cerr << "Line = " << line << "!\n";
         m_lineNum++;
     }
+    m_layout = table.layout();
 std::cerr << "-Ready!\n";
 }
 
