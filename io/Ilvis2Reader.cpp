@@ -226,7 +226,7 @@ char d = in.get();
 while (in.good())
 {
     std::cerr << d;
-    d = in.good();
+    d = in.get();
 }
 std::cerr << "Done new open!\n";
     m_stream.open(m_filename);
