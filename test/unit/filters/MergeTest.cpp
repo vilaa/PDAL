@@ -81,8 +81,11 @@ TEST(MergeTest, test6)
     PipelineManager mgr;
     mgr.setLog(log);
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
+
 //Added redirect.
-    auto ctx = Utils::redirect(o, oss);
+    std::ostringstream oss;
+    auto ctx = Utils::redirect(std::clog, oss);
+
     mgr.execute();
 
     PointViewSet viewSet = mgr.views();

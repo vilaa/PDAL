@@ -61,6 +61,7 @@ std::istream& operator >> (std::istream& in, Ilvis2Reader::IlvisMapping& mval)
     in >> s;
     s = Utils::toupper(s);
 
+    std::cerr << "Read string = " << s << "!\n";
     static std::map<std::string, Ilvis2Reader::IlvisMapping> m =
         { { "INVALID", Ilvis2Reader::IlvisMapping::INVALID },
           { "LOW", Ilvis2Reader::IlvisMapping::LOW },
@@ -114,7 +115,7 @@ namespace
 
 void Ilvis2Reader::addArgs(ProgramArgs& args)
 {
-//    args.add("mapping", "Mapping for values", m_mapping, IlvisMapping::ALL);
+    args.add("mapping", "Mapping for values", m_mapping, IlvisMapping::ALL);
     args.add("metadata", "Metadata file", m_metadataFile);
 }
 
