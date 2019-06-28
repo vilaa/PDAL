@@ -119,6 +119,7 @@ void Ilvis2Reader::addDimensions(PointLayoutPtr layout)
 
 void Ilvis2Reader::initialize(PointTableRef)
 {
+std::cerr << "Skip init!\n";
 /**
     if (!m_metadataFile.empty() && !FileUtils::fileExists(m_metadataFile))
         throwError("Invalid metadata file: '" + m_metadataFile + "'");
