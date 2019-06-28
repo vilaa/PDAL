@@ -65,7 +65,7 @@ public:
     {}
 
     NullStreambuf* rdbuf() const
-        { return const_cast<NullStreambuf *>(this); }
+        { return const_cast<NullOStream *>(this); }
 };
 
 } // namespace
