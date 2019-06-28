@@ -39,6 +39,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <ios>
 
 namespace pdal
 {
@@ -70,7 +71,7 @@ std::istream& operator >> (std::istream& in, Ilvis2Reader::IlvisMapping& mval)
 
     auto it = m.find(s);
     if (it == m.end())
-        in.setstate(std::iosbase::failbit);
+        in.setstate(std::ios_base::failbit);
     else
         mval = it->second;
     return in;
