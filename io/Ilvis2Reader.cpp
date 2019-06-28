@@ -119,6 +119,7 @@ void Ilvis2Reader::addDimensions(PointLayoutPtr layout)
 
 void Ilvis2Reader::initialize(PointTableRef)
 {
+/**
     if (!m_metadataFile.empty() && !FileUtils::fileExists(m_metadataFile))
         throwError("Invalid metadata file: '" + m_metadataFile + "'");
 
@@ -126,6 +127,7 @@ void Ilvis2Reader::initialize(PointTableRef)
     // See http://nsidc.org/data/docs/daac/icebridge/ilvis2/index.html for
     // background
     setSpatialReference(SpatialReference("EPSG:4326"));
+**/
 }
 
 
@@ -216,6 +218,16 @@ while (fread(&c, 1, 1, fp) == 1)
     std::cerr << c;
 fclose(fp);
 std::cerr << "Filename = " << m_filename << "!\n";
+
+std::ifstream in;
+in.open(m_filename);
+char d = in.get();
+while (in.good())
+{
+    std::cerr << d;
+    d = in.good();
+}
+std::cerr << "Done new open!\n";
     m_stream.open(m_filename);
     if (!m_stream.good())
         throwError("Couldn't open file '" + m_filename + "'.");

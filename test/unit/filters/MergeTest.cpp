@@ -75,6 +75,15 @@ TEST(MergeTest, test6)
 {
     using namespace pdal;
 
+    PipelineManager mgr;
+    mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
+    mgr.execute();
+    PointViewSet viewSet = mgr.views();
+    EXPECT_EQ(1u, viewSet.size());
+    PointViewPtr view = *viewSet.begin();
+    EXPECT_EQ(2130u, view->size());
+
+/**
     LogPtr log(new Log("pdal merge", &std::clog));
     log->setLevel((LogLevel)5);
 
@@ -91,11 +100,10 @@ TEST(MergeTest, test6)
  //   EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
    Utils::restore(o, ctx);
 
-    /**
     PointViewSet viewSet = mgr.views();
 
     EXPECT_EQ(1u, viewSet.size());
     PointViewPtr view = *viewSet.begin();
     EXPECT_EQ(2130u, view->size());
-    **/
+**/
 }
