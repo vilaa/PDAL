@@ -67,6 +67,7 @@ TEST(Ilvis2ReaderTest, testReadDefault)
     Options options(filename);
     std::shared_ptr<Ilvis2Reader> reader(new Ilvis2Reader);
 **/
+    std::cerr << "Test read default!\n";
     Options options;
     options.add("filename", Support::datapath("ilvis2/ILVIS2_TEST_FILE.TXT"));
     Ilvis2Reader reader;
@@ -101,6 +102,7 @@ TEST(Ilvis2ReaderTest, testReadDefault)
 
 TEST(Ilvis2ReaderTest, testReadHigh)
 {
+std::cerr << "Test read high!\n";
     Option filename("filename",
         Support::datapath("ilvis2/ILVIS2_TEST_FILE.TXT"));
     Options options(filename);
