@@ -38,7 +38,6 @@
 
 #include "Support.hpp"
 
-
 TEST(MergeTest, test4)
 {
     using namespace pdal;
@@ -69,8 +68,6 @@ TEST(MergeTest, test5)
     EXPECT_EQ(2130u, view->size());
 }
 
-/**
-**/
 TEST(MergeTest, test6)
 {
     using namespace pdal;
@@ -89,30 +86,12 @@ std::cerr << "Before execute!\n";
     mgr.execute();
 std::cerr << "After execute!\n";
 
-    PointViewSet viewSet = mgr.views();
-    EXPECT_EQ(1u, viewSet.size());
-    PointViewPtr view = *viewSet.begin();
-    EXPECT_EQ(2130u, view->size());
-
+    Utils::restore(o, ctx);
+    std::string s = oss.str();
+    EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
 /**
-    LogPtr log(new Log("pdal merge", &std::clog));
-    log->setLevel((LogLevel)5);
-
-    PipelineManager mgr;
-    mgr.setLog(log);
-    mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
-    std::ostringstream oss;
-    std::ostream& o = std::clog;
-    auto ctx = Utils::redirect(o, oss);
-//ABELL OK to here.
-
-    mgr.execute();
- //   std::string s = oss.str();
- //   EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
-   Utils::restore(o, ctx);
 
     PointViewSet viewSet = mgr.views();
-
     EXPECT_EQ(1u, viewSet.size());
     PointViewPtr view = *viewSet.begin();
     EXPECT_EQ(2130u, view->size());
