@@ -38,10 +38,11 @@
 
 #include "Support.hpp"
 
+namespace pdal
+{
+
 TEST(MergeTest, test4)
 {
-    using namespace pdal;
-
     PipelineManager mgr;
     mgr.readPipeline(Support::configuredpath("filters/merge.json"));
     mgr.execute();
@@ -55,8 +56,6 @@ TEST(MergeTest, test4)
 
 TEST(MergeTest, test5)
 {
-    using namespace pdal;
-
     PipelineManager mgr;
     mgr.readPipeline(Support::configuredpath("filters/merge2.json"));
     mgr.execute();
@@ -70,14 +69,12 @@ TEST(MergeTest, test5)
 
 TEST(MergeTest, test6)
 {
-    using namespace pdal;
-
 //    LogPtr log(new Log("pdal merge", &std::clog));
-    LogPtr log(new Log("pdal merge", Support::temppath("log.tmp")));
-    log->setLevel((LogLevel)5);
+//    LogPtr log(new Log("pdal merge", Support::temppath("log.tmp")));
+//    log->setLevel((LogLevel)5);
 
     PipelineManager mgr;
-    mgr.setLog(log);
+//    mgr.setLog(log);
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
 
 //Added redirect.
@@ -98,3 +95,5 @@ std::cerr << "After execute!\n";
     EXPECT_EQ(2130u, view->size());
 **/
 }
+
+} // namespace pdal

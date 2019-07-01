@@ -43,7 +43,7 @@ namespace pdal
 class PDAL_DLL MergeFilter : public Filter, public Streamable
 {
 public:
-    MergeFilter ()
+    MergeFilter()
     {}
 
     std::string getName() const;
