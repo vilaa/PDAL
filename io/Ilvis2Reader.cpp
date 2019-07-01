@@ -62,7 +62,6 @@ std::istream& operator >> (std::istream& in, Ilvis2Reader::IlvisMapping& mval)
     in >> s;
     s = Utils::toupper(s);
 
-    std::cerr << "Read string = " << s << "!\n";
     static std::map<std::string, Ilvis2Reader::IlvisMapping> m =
         { { "INVALID", Ilvis2Reader::IlvisMapping::INVALID },
           { "LOW", Ilvis2Reader::IlvisMapping::LOW },
@@ -101,31 +100,6 @@ Ilvis2Reader::Ilvis2Reader() : m_mdReader(new Ilvis2MetadataReader)
 
 Ilvis2Reader::~Ilvis2Reader()
 {}
-
-
-/**
-namespace
-{
-    void readit(std::ifstream& stream, const std::string& filename)
-    {
-        stream.open(filename);
-        if (!stream.good())
-            std::cerr << "Bad stream on open!\n";
-        if (!stream.is_open())
-            std::cerr << "Not open!\n";
-        else
-            std::cerr << "Open!\n";
-        std::cerr << "Position = " << stream.tellg() << "!\n";
-
-        for (size_t i = 0; stream.good() && i < 2; ++i)
-        {
-            std::string line;
-            std::getline(stream, line);
-        }
-        stream.close();
-    }
-} // namespace
-**/
 
 
 void Ilvis2Reader::addArgs(ProgramArgs& args)
@@ -244,23 +218,15 @@ void Ilvis2Reader::ready(PointTableRef table)
     m_lineNum = 0;
 
     m_stream.open(m_filename);
-    if (!m_stream.is_open())
-        std::cerr << "Not open!\n";
-    else
-        std::cerr << "Open!\n";
-    std::cerr << "Position = " << m_stream.tellg() << "!\n";
     for (size_t i = 0; m_stream.good() && i < HeaderSize; ++i)
     {
-std::cerr << "About to read line " << i << "!\n";
         std::string line;
         std::getline(m_stream, line);
-std::cerr << "Line = " << line << "!\n";
         m_lineNum++;
     }
 
     m_resample = false;
     m_layout = table.layout();
-std::cerr << "-Ready!\n";
 }
 
 

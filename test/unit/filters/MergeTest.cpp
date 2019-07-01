@@ -72,7 +72,8 @@ TEST(MergeTest, test6)
 {
     using namespace pdal;
 
-    LogPtr log(new Log("pdal merge", &std::clog));
+//    LogPtr log(new Log("pdal merge", &std::clog));
+    LogPtr log(new Log("pdal merge", Support::tempfile("log.tmp")));
     log->setLevel((LogLevel)5);
 
     PipelineManager mgr;
@@ -80,16 +81,16 @@ TEST(MergeTest, test6)
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
 
 //Added redirect.
-    std::ostringstream oss;
-    auto ctx = Utils::redirect(std::clog, oss);
+//    std::ostringstream oss;
+//    auto ctx = Utils::redirect(std::clog, oss);
 std::cerr << "Before execute!\n";
     mgr.execute();
 std::cerr << "After execute!\n";
 
+/**
     Utils::restore(std::clog, ctx);
     std::string s = oss.str();
     EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
-/**
 
     PointViewSet viewSet = mgr.views();
     EXPECT_EQ(1u, viewSet.size());
