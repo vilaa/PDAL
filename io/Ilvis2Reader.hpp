@@ -39,21 +39,11 @@
 #include <pdal/util/IStream.hpp>
 #include <map>
 
-#ifndef PDAL_HAVE_LIBXML2
 namespace pdal
 {
-  class Ilvis2MetadataReader
-  {
-  public:
-      inline void readMetadataFile(std::string filename, pdal::MetadataNode* m) {};
-  };
-}
-#else
-    #include "Ilvis2MetadataReader.hpp"
-#endif
 
-namespace pdal
-{
+class Ilvis2MetadataReader;
+
 class PDAL_DLL Ilvis2Reader : public Reader, public Streamable
 {
 public:
@@ -71,20 +61,20 @@ public:
         {}
     };
 
-    Ilvis2Reader()
-    {}
+    Ilvis2Reader();
+    virtual ~Ilvis2Reader();
 
     std::string getName() const;
 
 private:
-    std::ifstream m_stream;
+    PointLayoutPtr m_layout;
     IlvisMapping m_mapping;
     StringList m_fields;
     size_t m_lineNum;
     bool m_resample;
-    PointLayoutPtr m_layout;
+    std::ifstream m_stream;
     std::string m_metadataFile;
-    Ilvis2MetadataReader m_mdReader;
+    std::unique_ptr<Ilvis2MetadataReader> m_mdReader;
 
     virtual void addDimensions(PointLayoutPtr layout);
     virtual void addArgs(ProgramArgs& args);
@@ -96,7 +86,9 @@ private:
     virtual void readPoint(PointRef& point, StringList s, std::string pointMap);
 };
 
+/**
 std::ostream& operator<<(std::ostream& out,
     const Ilvis2Reader::IlvisMapping& mval);
+**/
 
 } // namespace pdal

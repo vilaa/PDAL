@@ -95,6 +95,15 @@ std::ostream& operator<<(std::ostream& out,
     return out;
 }
 
+Ilvis2Reader::Ilvis2Reader() : m_mdReader(new Ilvis2MetadataReader)
+{}
+
+
+Ilvis2Reader::~Ilvis2Reader()
+{}
+
+
+/**
 namespace
 {
     void readit(std::ifstream& stream, const std::string& filename)
@@ -116,6 +125,7 @@ namespace
         stream.close();
     }
 } // namespace
+**/
 
 
 void Ilvis2Reader::addArgs(ProgramArgs& args)
@@ -221,7 +231,7 @@ void Ilvis2Reader::ready(PointTableRef table)
     {
         try
         {
-            m_mdReader.readMetadataFile(m_metadataFile, &m_metadata);
+            m_mdReader->readMetadataFile(m_metadataFile, &m_metadata);
         }
         catch (const Ilvis2MetadataReader::error& err)
         {
