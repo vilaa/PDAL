@@ -86,7 +86,7 @@ std::cerr << "Before execute!\n";
     mgr.execute();
 std::cerr << "After execute!\n";
 
-    Utils::restore(o, ctx);
+    Utils::restore(std::clog, ctx);
     std::string s = oss.str();
     EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
 /**
