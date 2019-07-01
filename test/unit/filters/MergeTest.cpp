@@ -73,7 +73,7 @@ TEST(MergeTest, test6)
     using namespace pdal;
 
 //    LogPtr log(new Log("pdal merge", &std::clog));
-    LogPtr log(new Log("pdal merge", Support::tempfile("log.tmp")));
+    LogPtr log(new Log("pdal merge", Support::temppath("log.tmp")));
     log->setLevel((LogLevel)5);
 
     PipelineManager mgr;
