@@ -22,17 +22,13 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-mi
         libhdf5-cpp-100 \
         liblapack-dev \
         libtiff5-dev \
-        libgeotiff-epsg \
         openssh-client \
-        python-dev \
-        python-numpy \
+        python3-dev \
+        python3-numpy \
         software-properties-common \
         wget \
         automake \
         libtool \
-        libspatialite-dev \
-        libsqlite3-mod-spatialite \
-        subversion \
         libboost-filesystem1.65-dev \
         libboost-iostreams1.65-dev \
         libboost-program-options1.65-dev \
@@ -41,9 +37,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-mi
         subversion \
         clang \
         clang-6.0 \
-        libproj-dev \
         libc6-dev \
-        libnetcdf-dev \
         libopenjp2-7-dev \
         libpng-dev \
         libjpeg-dev \
@@ -58,113 +52,21 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --fix-mi
         libmysqlclient-dev \
         libltdl-dev \
         libcurl4-openssl-dev \
+        libssl-dev \
+        python3-numpy \
         libspatialite-dev \
         libdap-dev\
         cython \
-        python-pip \
+        python3-pip \
         libpcl-dev \
         time \
         libhpdf-dev \
-        python-setuptools \
+        python3-setuptools \
         libhpdf-dev \
         unzip \
-        libopenscenegraph-dev \
         libzstd-dev \
         liblzma-dev \
-        libgdal-dev \
         libeigen3-dev \
-        proj-data \
         ninja-build \
+        sqlite3 \
     && rm -rf /var/lib/apt/lists/*
-
-RUN git clone https://github.com/hobu/nitro \
-    && cd nitro \
-    && mkdir build \
-    && cd build \
-    && cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        .. \
-    && make \
-    && make install \
-    && rm -rf /nitro
-
-RUN git clone https://github.com/LASzip/LASzip.git laszip \
-    && cd laszip \
-    && git checkout 3.1.1 \
-    && cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE="Release" \
-        . \
-    && make \
-    && make install \
-    && rm -rf /laszip
-
-
-RUN git clone https://github.com/hobu/hexer.git \
-    && cd hexer \
-    && mkdir build \
-    && cd build \
-    && cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE="Release" \
-        .. \
-    && make \
-    && make install \
-    && rm -rf /hexer
-
-RUN git clone  https://github.com/hobu/laz-perf.git \
-    && cd laz-perf \
-    && mkdir build \
-    && cd build \
-    && cmake \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE="Release" \
-        .. \
-    && make \
-    && make install \
-    && rm -rf /laz-perf
-
-
-RUN git clone --depth 1 --branch v0.4.6 https://github.com/gadomski/fgt.git \
-    && cd fgt \
-    && cmake . \
-        -DWITH_TESTS=OFF \
-        -DBUILD_SHARED_LIBS=ON \
-        -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE=Release \
-    && make \
-    && make install \
-    && rm -rf /fgt
-
-RUN git clone --depth 1 --branch v0.5.1 https://github.com/gadomski/cpd.git \
-    && cd cpd \
-    && cmake . \
-        -DWITH_TESTS=OFF \
-        -DWITH_FGT=ON \
-        -DWITH_STRICT_WARNINGS=OFF \
-        -DWITH_DOCS=OFF \
-        -DEIGEN3_INCLUDE_DIR=/usr/include/eigen3 \
-        -DBUILD_SHARED_LIBS=ON \
-        -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_BUILD_TYPE=Release \
-    && make \
-    && make install \
-    && rm -rf /cpd
-
-
-# Install Java.
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-    add-apt-repository -y ppa:webupd8team/java && \
-    apt-get update && \
-    apt-get install -y oracle-java8-installer && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /var/cache/oracle-jdk8-installer
-
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
-
-# fixup for PCL 1.7
-RUN ln -s /usr/lib/x86_64-linux-gnu/libvtkCommonCore-6.3.so /usr/lib/libvtkproj4.so
-
-
-
