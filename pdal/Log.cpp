@@ -81,6 +81,7 @@ Log::Log(std::string const& leaderString, std::ostream* v, bool timing)
 
 Log::~Log()
 {
+std::cerr << "Deleting Log leader = " << m_leaders.top() << "!\n";
     if (m_deleteStreamOnCleanup)
     {
         m_log->flush();

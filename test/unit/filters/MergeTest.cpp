@@ -70,7 +70,7 @@ TEST(MergeTest, test5)
 TEST(MergeTest, test6)
 {
 //    LogPtr log(new Log("pdal merge", &std::clog));
-//    LogPtr log(new Log("pdal merge", Support::temppath("log.tmp")));
+    LogPtr log(new Log("pdal merge", Support::temppath("log.tmp")));
 //    log->setLevel((LogLevel)5);
 
     PipelineManager mgr;
