@@ -74,7 +74,7 @@ TEST(MergeTest, test6)
 //    log->setLevel((LogLevel)5);
 
     PipelineManager mgr;
-//    mgr.setLog(log);
+    mgr.setLog(log);
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
 
 //Added redirect.
