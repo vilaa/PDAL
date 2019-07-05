@@ -69,16 +69,15 @@ TEST(MergeTest, test5)
 
 TEST(MergeTest, test6)
 {
-//    LogPtr log(new Log("pdal merge", &std::clog));
     LogPtr log(new Log("pdal merge", Support::temppath("log.tmp")));
-//    log->setLevel((LogLevel)5);
+    log->setLevel((LogLevel)5);
 
     PipelineManager mgr;
     mgr.setLog(log);
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
 
 //Added redirect.
-//    std::ostringstream oss;
+    std::ostringstream oss;
 //    auto ctx = Utils::redirect(std::clog, oss);
 std::cerr << "Before execute!\n";
     mgr.execute();
