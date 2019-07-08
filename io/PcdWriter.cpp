@@ -33,6 +33,7 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
+/*
 #include "PcdWriter.hpp"
 #include "point_types.hpp"
 
@@ -40,10 +41,10 @@
 #include <iostream>
 #include <map>
 
-#include <pcl/io/pcd_io.h>
-#include <pcl/io/impl/pcd_io.hpp>
+#include "pcd_io.h"
+#include "pcd_io.hpp"
 
-#include "../PCLConversions.hpp"
+//#include "../PCLConversions.hpp"
 
 #include <pdal/PointView.hpp>
 #include <pdal/util/ProgramArgs.hpp>
@@ -58,7 +59,7 @@ static PluginInfo const s_info
     "http://pdal.io/stages/writers.pcd.html"
 };
 
-CREATE_SHARED_STAGE(PcdWriter, s_info)
+CREATE_STATIC_STAGE(PcdWriter, s_info)
 
 std::string PcdWriter::getName() const { return s_info.name; }
 
@@ -103,3 +104,4 @@ void PcdWriter::done(PointTableRef)
 
 
 } // namespaces
+*/

@@ -33,16 +33,17 @@
 * OF SUCH DAMAGE.
 ****************************************************************************/
 
+/*
 #pragma once
 
 #include <pdal/EigenUtils.hpp>
 #include <pdal/Writer.hpp>
 #include <pdal/util/FileUtils.hpp>
 
-#include "../PCLConversions.hpp"
+//#include "../PCLConversions.hpp"
 
-#include <pcl/io/pcd_io.h>
-#include <pcl/io/impl/pcd_io.hpp>
+#include "pcd_io.h"
+#include "pcd_io.hpp"
 
 #include <vector>
 #include <string>
@@ -125,3 +126,4 @@ void PcdWriter::writeView(const PointViewPtr view)
 
 
 } // namespaces
+*/

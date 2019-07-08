@@ -34,9 +34,8 @@
 
 #pragma once
 
-#include <pdal/PointView.hpp>
 #include <pdal/Reader.hpp>
-#include <pdal/StageFactory.hpp>
+#include <pdal/Streamable.hpp>
 
 #include "PcdCommon.hpp"
 #include "PcdHeader.hpp"
@@ -44,22 +43,75 @@
 namespace pdal
 {
 
-class PDAL_DLL PcdReader : public pdal::Reader
+class PDAL_DLL PcdReader : public Reader, public Streamable
 {
 public:
-    PcdReader() : Reader() {};
-
     std::string getName() const;
+    
+    PcdReader() : Reader()
+    {}
 
 private:
-    PcdHeader m_header;
+    /**
+      Retrieve summary information for the file. NOTE - entire file must
+      be read to retrieve summary for text files.
 
-    virtual void addDimensions(PointLayoutPtr layout);
-    virtual void ready(PointTableRef table);
-    virtual point_count_t read(PointViewPtr view, point_count_t count);
-
+      \param table  Point table being initialized.
+    */
     virtual QuickInfo inspect();
+
+    /**
+      Initialize the reader by opening the file and reading the header line.
+      Closes the file on completion.
+
+      \param table  Point table being initialized.
+    */
     virtual void initialize();
+
+    /**
+      Add dimensions found in the header line to the layout.
+
+      \param layout  Layout to which the dimenions are added.
+    */
+    virtual void addDimensions(PointLayoutPtr layout);
+   
+    /**
+      Reopen the file in preparation for reading.
+
+      \param table  Point table to make ready.
+    */
+    virtual void ready(PointTableRef table);
+
+    /**
+      Read up to numPts points into the \ref view.
+
+      \param view  PointView in which to insert point data.
+      \param numPts  Maximum number of points to read.
+      \return  Number of points read.
+    */
+    virtual point_count_t read(PointViewPtr view, point_count_t numPts);
+
+    /**
+      Close input file.
+
+      \param table  PointTable we're done with.
+    */
+    virtual void done(PointTableRef table);
+
+    /**
+      Read a single point from the input.
+
+      \param point  Reference to point to fill with data.
+      \return  False if no point could be read.
+    */
+    virtual bool processOne(PointRef& point);
+
+    bool fillFields();
+    
+    PcdHeader m_header;
+    std::istream *m_istream;
+    Dimension::IdList m_dims;
+    StringList m_fields;
 };
 
 } // namespace pdal
