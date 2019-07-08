@@ -73,7 +73,7 @@ void PipelineManager::readPipeline(const std::string& filename)
     if (FileUtils::extension(filename) == ".json")
     {
         PipelineReaderJSON pipeReader(*this);
-        return pipeReader.readPipeline(filename);
+        pipeReader.readPipeline(filename);
     }
     else
     {
