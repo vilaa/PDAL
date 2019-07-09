@@ -76,14 +76,14 @@ TEST(MergeTest, test6)
     mgr.setLog(log);
     mgr.readPipeline(Support::configuredpath("filters/merge3.json"));
 
-    std::ostringstream oss;
-    auto ctx = Utils::redirect(std::clog, oss);
-std::cerr << "Before execute!\n";
-    mgr.execute();
-std::cerr << "After execute!\n";
+    {
+        std::ostringstream oss;
+        auto ctx = Utils::redirect(std::clog, oss);
+        mgr.execute();
+        Utils::restore(std::clog, ctx);
+    }
 
 /**
-    Utils::restore(std::clog, ctx);
     std::string s = oss.str();
     EXPECT_TRUE(s.find("inconsistent spatial references") != s.npos);
 

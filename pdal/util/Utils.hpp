@@ -680,9 +680,14 @@ namespace Utils
     */
     inline void restore(std::ostream& out, RedirectStream& redir)
     {
+        // The buffer must be restored prior to potentially deleting
+        // the source or things could blow up.
         out.rdbuf(redir.m_buf);
         if (redir.m_out)
+        {
             redir.m_out->close();
+            delete redir.m_out;
+        }
         redir.m_out = NULL;
         redir.m_buf = NULL;
     }
