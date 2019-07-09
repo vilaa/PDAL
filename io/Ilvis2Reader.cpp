@@ -156,7 +156,6 @@ T convert(const StringList& s, const std::string& name, size_t fieldno)
 void Ilvis2Reader::readPoint(PointRef& point, StringList s,
     std::string pointMap)
 {
-    std::cerr << "Reading point!\n";
     point.setField(pdal::Dimension::Id::LvisLfid,
         convert<unsigned>(s, "LVIS_LFID", 0));
     point.setField(pdal::Dimension::Id::ShotNumber,
