@@ -36,6 +36,7 @@
 
 #include <pdal/Reader.hpp>
 #include <pdal/Streamable.hpp>
+#include <pdal/util/IStream.hpp>
 
 #include "PcdCommon.hpp"
 #include "PcdHeader.hpp"
@@ -109,9 +110,11 @@ private:
     bool fillFields();
     
     PcdHeader m_header;
-    std::istream *m_istream;
+    std::istream *m_istreamPtr;
+    ILeStream m_stream;
     Dimension::IdList m_dims;
     StringList m_fields;
+    point_count_t m_index;
 };
 
 } // namespace pdal

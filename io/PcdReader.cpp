@@ -71,11 +71,23 @@ QuickInfo PcdReader::inspect()
 
 void PcdReader::ready(PointTableRef table)
 {
-    m_istream = Utils::openFile(m_filename, false);
-    if (!m_istream)
-        throwError("Unable to open text file '" + m_filename + "'.");
-
-    m_istream->seekg(m_header.m_dataOffset);
+    m_index = 0;
+    switch (m_header.m_dataStorage)
+    {
+    case PcdDataStorage::ASCII:
+        m_istreamPtr = Utils::openFile(m_filename, false);
+        if (!m_istreamPtr)
+            throwError("Unable to open ASCII PCD file '" + m_filename + "'.");
+        m_istreamPtr->seekg(m_header.m_dataOffset);
+    case PcdDataStorage::BINARY:
+        m_istreamPtr = Utils::openFile(m_filename, true);
+        if (!m_istreamPtr)
+            throwError("Unable to open binary PCD file '" + m_filename + "'.");
+        m_stream = ILeStream(m_istreamPtr);
+        m_stream.seek(m_header.m_dataOffset);
+    default:
+        return;
+    }
 }
 
 
@@ -106,12 +118,12 @@ bool PcdReader::fillFields()
 {
     while (true)
     {
-        if (!m_istream->good())
+        if (!m_istreamPtr->good())
             return false;
 
         std::string buf;
 
-        std::getline(*m_istream, buf);
+        std::getline(*m_istreamPtr, buf);
         //m_line++;
         if (buf.empty())
             continue;
@@ -143,23 +155,53 @@ bool PcdReader::fillFields()
 
 bool PcdReader::processOne(PointRef& point)
 {
-    if (!fillFields())
-        return false;
-
-    double d;
-    for (size_t i = 0; i < m_fields.size(); ++i)
+    switch (m_header.m_dataStorage)
     {
-        if (!Utils::fromString(m_fields[i], d))
+    case PcdDataStorage::ASCII:
+        if (!fillFields())
+            return false;
+
+        double d;
+        for (size_t i = 0; i < m_fields.size(); ++i)
         {
-            log()->get(LogLevel::Error) << "Can't convert "
-                "field '" << m_fields[i] << "' to numeric value on line " <<
-                /*m_line <<*/ " in '" << m_filename << "'.  Setting to 0." <<
-                std::endl;
-            d = 0;
+            if (!Utils::fromString(m_fields[i], d))
+            {
+                log()->get(LogLevel::Error) << "Can't convert "
+                    "field '" << m_fields[i] << "' to numeric value on line " <<
+                    /*m_line <<*/ " in '" << m_filename << "'.  Setting to 0." <<
+                    std::endl;
+                d = 0;
+            }
+            point.setField(m_dims[i], d);
         }
-        point.setField(m_dims[i], d);
+        return true;
+    case PcdDataStorage::BINARY:
+        if (!m_stream.good())
+            return false;
+
+        if ((m_index >= m_count) || (m_index >= (point_count_t)m_header.m_pointCount))
+            return false;
+
+        for (auto const& i : m_header.m_fields)
+        {
+            switch (i.m_type)
+            {
+                case PcdFieldType::I:
+                    int32_t ival;
+                    m_stream >> ival;
+                    point.setField(i.m_id, ival);
+                case PcdFieldType::F:
+                default:
+                    float fval;
+                    m_stream >> fval;
+                    point.setField(i.m_id, fval);
+            }
+        }
+        m_index++;
+        return true;
+    default:
+        return false;
     }
-    return true;
 }
 
 
@@ -181,22 +223,23 @@ point_count_t PcdReader::read(PointViewPtr view, point_count_t count)
 
 void PcdReader::initialize()
 {
-    try {
-        m_istream = Utils::openFile(m_filename, false);
-        *m_istream >> m_header;
-        //std::cout << m_header; // echo back for testing
-    } catch (...) {
-        Utils::closeFile(m_istream);
-        throw;
-    }
+    if (m_filename.empty())
+        throwError("Can't read PCD file without filename.");
 
-    Utils::closeFile(m_istream);
+    m_istreamPtr = Utils::openFile(m_filename, false);
+    if (!m_istreamPtr)
+        throwError("Can't open file '" + m_filename + "'.");
+    *m_istreamPtr >> m_header;
+    //std::cout << m_header; // echo back for testing
+
+    Utils::closeFile(m_istreamPtr);
 }
 
 
 void PcdReader::done(PointTableRef table)
 {
-    Utils::closeFile(m_istream);
+    m_stream.close();
+    Utils::closeFile(m_istreamPtr);
 }
 
 
