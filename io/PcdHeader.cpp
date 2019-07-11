@@ -303,4 +303,110 @@ std::ostream& operator<<(std::ostream& out, PcdHeader& header)
     return out;
 }
 
+OLeStream& operator<<(OLeStream& out, const PcdHeader& header)
+{
+    out.put("VERSION ", 8);
+    switch (header.m_version) {
+    case PcdVersion::PCD_V6:
+        out.put("0.6", 3);
+    case PcdVersion::PCD_V7:
+        out.put("0.7", 3);
+    case PcdVersion::unknown:
+        throw pdal_error("Unrecognized PcdVersion");
+    }
+    out.put("\n", 1);
+
+    out.put("FIELDS", 6);
+    for (auto i : header.m_fields)
+    {
+        out.put(" ", 1);
+        out.put(i.m_label);
+    }
+    out.put("\n", 1);
+
+    out.put("SIZE", 4);
+    for (auto i : header.m_fields)
+    {
+        out.put(" ", 1);
+        out << i.m_size;
+    }
+    out.put("\n", 1);
+
+    out.put("TYPE", 4);
+    for (auto i : header.m_fields)
+    {
+        out.put(" ", 1);
+        switch (i.m_type) {
+        case PcdFieldType::I:
+            out.put("I", 1);
+        case PcdFieldType::U:
+            out.put("U", 1);
+        case PcdFieldType::F:
+            out.put("F", 1);
+        case PcdFieldType::unknown:
+            throw pdal_error("Unrecognized PcdFieldType");
+        }
+    }
+    out.put("\n", 1);
+
+    out.put("COUNT", 5);
+    for (auto i : header.m_fields)
+    {
+        out.put(" ", 1);
+        out << i.m_count;
+    }
+    out.put("\n", 1);
+
+    out.put("WIDTH", 5);
+    out << header.m_width;
+    out.put("\n", 1);
+
+    out.put("HEIGHT", 6);
+    out << header.m_height;
+    out.put("\n", 1);
+
+    if (header.m_version == PcdVersion::PCD_V7)
+    {
+        auto& orig = header.m_origin;
+        auto& orient = header.m_orientation;
+        // TODO: noshowpoint does not seem to work
+        out.put("VIEWPOINT", 9);
+        //out << std::fixed << std::noshowpoint;
+        out << orig.x();
+        out.put(" ", 1);
+        out << orig.y();
+        out.put(" ", 1);
+        out << orig.z();
+        out.put(" ", 1);
+        out << orient.w();
+        out.put(" ", 1);
+        out << orient.x();
+        out.put(" ", 1);
+        out << orient.y();
+        out.put(" ", 1);
+        out << orient.z();
+        out.put("\n", 1);
+    }
+
+    out.put("POINTS", 6);
+    out << (uint32_t)header.m_pointCount;
+    out.put("\n", 1);
+
+    out.put("DATA", 4);
+    switch (header.m_dataStorage) {
+    case PcdDataStorage::ASCII:
+        out.put("ascii", 5);
+    case PcdDataStorage::BINARY:
+        out.put("binary", 6);
+    case PcdDataStorage::COMPRESSED:
+        out.put("compressed", 10);
+    case PcdDataStorage::unknown:
+        throw pdal_error("Unrecognized PcdDataStorage");
+    }
+    out.put("\n", 1);
+
+    return out;
+}
+
+
 }

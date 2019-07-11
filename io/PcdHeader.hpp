@@ -36,6 +36,7 @@
 
 #include <pdal/Dimension.hpp>
 #include <pdal/EigenUtils.hpp>
+#include <pdal/util/OStream.hpp>
 
 namespace pdal
 {
@@ -106,6 +107,7 @@ struct PcdHeader
 };
 std::istream& operator>>(std::istream& in, PcdHeader& header);
 std::ostream& operator<<(std::ostream& out, PcdHeader& header);
+OLeStream& operator<<(OLeStream& out, const PcdHeader& header);
 
 }
 
